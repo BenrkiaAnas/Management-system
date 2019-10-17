@@ -96,35 +96,31 @@
             <hr>
             <h4 >Add Members</h4>
             <!-- Start The Part Of Adding User To Project Using Ajax -->
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Email" id="demo" name="email">
-                <div class="input-nav-itemgroup-append">
-                    <span class="input-group-text">Add User</span>
-                </div>
-            </div>
+            <ul class="input-group mb-3">
+                {!! Form::open(['action' => ['ProjectsController@adduser',$project->id], 'method' => 'post']) !!}
+                    {!! Form::text('user', '', ['class' => 'form-control','placeholder' => "Add User"]) !!}
+                    {!! Form::hidden('project_id',$project->id) !!}
+                    <div class="input-group-append">
+                        {!! Form::submit('Add User', ['class' => 'btn btn-outline-secondary']) !!}
+                    </div>
+                {!! Form::close() !!}
+            </ul>
 
             <!-- Listing Member Of Project -->
             <ul class="nav flex-column">
+
                 <li class="nav-item">
                     <h4 class="nav-link">
                         Team Members
                     </h4>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/projects/{{$project->id}}/edit">
-                        Anas Joker
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/projects">
-                        John Doe
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/projects/create">
-                        Mark Vishwas
-                    </a>
-                </li>
+                @foreach ($project->users as $user)
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            {{$user->name}}
+                        </a>
+                    </li>
+                @endforeach
 
 
             </ul>

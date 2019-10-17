@@ -23,6 +23,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::middleware(['auth'])->group(function (){
     Route::resource('companies','CompaniesController');
 
+    Route::post('/projects/adduser','ProjectsController@adduser')->name('projects.adduser'); // ? : Parametr Optional
     Route::get('/projects/create/{company_id?}','ProjectsController@create'); // ? : Parametr Optional
 
     Route::resource('projects','ProjectsController');

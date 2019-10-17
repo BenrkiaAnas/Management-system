@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Company;
 use App\Project;
+use App\ProjectUser;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,6 +28,40 @@ class ProjectsController extends Controller
         }
         // Redirect To Login
         return view('auth.login');
+    }
+
+    /*
+     * Add User To A Project
+     */
+    public function adduser(Request $request)
+    {
+
+        // Add User To A Project
+        // Take a project , Add User To It
+        $project = Project::find($request->input('project_id'));
+
+        // Have This Action For Only One Who Create The Project
+        if(auth()->user()->id == $project->user_id)
+        {
+            $user = User::where('email',$request->input('user'))->first(); // Retreive Single Record
+            // Checking If The User Already Attached To Project
+            $projectUser = ProjectUser::where('user_id',$user->id)->where('project_id',$project->id)->first();
+            if(!$projectUser)
+            {
+                // If Found User And Project Too
+                if($user && $project)
+                {
+                    // Attach Ussr To Project
+                    $project->users()->attach($user->id); // Joining Users To Project
+                }
+                return redirect()->route('projects.show',[$project->id])->with('success','User Has Added To Project Successfully');
+
+            }else{
+                return redirect()->route('projects.show',[$project->id])->with('error','User Already Added To Project');
+            }
+        }
+        return redirect()->route('projects.show',[$project->id])->with('error','Error Adding User To Project');
+
     }
 
     /**

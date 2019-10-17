@@ -6,3 +6,9 @@
         </div>
     @endforeach
 @endif
+<!-- Displaying The Error Of The Session -->
+@if (session('error'))
+    <div class="alert alert-danger">
+        {{session('error')}}
+    </div>
+@endif
